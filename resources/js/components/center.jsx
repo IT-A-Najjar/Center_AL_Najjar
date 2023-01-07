@@ -17,7 +17,7 @@ class Center extends Component{
     }
     getProductsList() {
         let set=this;
-        axios("/get/products/list").then(function (response) {
+        axios("/centeralnajjar/get/products/list").then(function (response) {
             set.setState({
                 products: response.data,
             });

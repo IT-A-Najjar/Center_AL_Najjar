@@ -27,7 +27,7 @@ class Update extends Component{
 
     updateProductData=()=>{
         axios
-            .post("/update/product/data",{
+            .post("/centeralnajjar/update/product/data",{
                 productId: this.props.id,
                 productName: this.state.productName,
                 productPrice: this.state.productPrice,

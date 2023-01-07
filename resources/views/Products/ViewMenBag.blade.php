@@ -17,7 +17,7 @@
                     @if($product->item == 1 && $product->type == 3)
                         <div class="col-12 col-md-4 mb-4">
                             <div class="card h-100">
-                                <img src="./assets/img/brand_01.png" class="card-img-top" alt="...">
+                                <img src="ProductImages/{{$product->photo}}"class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <ul class="list-unstyled d-flex justify-content-between">
                                         <li>

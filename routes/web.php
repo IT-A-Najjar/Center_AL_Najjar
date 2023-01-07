@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TypeController;
+use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeesController;
 use \App\Http\Controllers\ProductsController;
@@ -55,15 +58,19 @@ Route::get('/ViewFemenShal', function () {
 
 Auth::routes();
 
-Route::get('/get/products/list',[ProductsController::class,'getProductsList']);
+Route::get('/centeralnajjar/get/products/list',[ProductsController::class,'getProductsList']);
 
-Route::post('/get/individual/product/details',[ProductsController::class,'getProductDetails']);
+Route::get('/centeralnajjar/get/items/list',[ItemController::class,'getItemList']);
 
-Route::post('/update/product/data',[ProductsController::class,'updateProductData']);
+Route::get('/centeralnajjar/get/types/list',[TypeController::class,'getTypeList']);
 
-Route::delete('/delete/product/data/{product}',[ProductsController::class,'destroy']);
+Route::post('/centeralnajjar/get/individual/product/details',[ProductsController::class,'getProductDetails']);
 
-Route::post('/store/product/data',[ProductsController::class,'store']);
+Route::post('/centeralnajjar/update/product/data',[ProductsController::class,'updateProductData']);
+
+Route::delete('/centeralnajjar/delete/product/data/{product}',[ProductsController::class,'destroy']);
+
+Route::post('/centeralnajjar/store/product/data',[ProductsController::class,'store']);
 
 /* ================================ */
 

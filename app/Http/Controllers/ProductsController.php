@@ -13,7 +13,6 @@ class ProductsController extends Controller
     public function getProductsList(){
         try {
             $products = Products::orderBy('id','DESC')->get();
-//            return response()->json($employees);
             return response()->json($products);
         }catch (Exception $e){
             Log::error($e);
@@ -27,6 +26,8 @@ class ProductsController extends Controller
             Log::error($e);
         }
     }
+
+
     public function updateProductData(Request $request){
         try {
             $productId=$request->get('productId');
@@ -47,7 +48,7 @@ class ProductsController extends Controller
     public function destroy(Request $request){
         try
         {
-            $product=Products::find('id',$request->get('productId'));
+            $product=Products::get('id',$request->get('productId'));
             $product->delete();
             return response()->json($product);
         }
@@ -56,20 +57,21 @@ class ProductsController extends Controller
             Log::error($e);
         }
     }
+
     public function store(Request $request){
 
         try {
-            $image=$request->file('productPhoto')->getClientOriginalName();
-            $path=$request->file('productPhoto')->storeAs('p_img',$image,'aa');
+            $image=$request->file('productPhoto');
+            $nameImage=time().'.'.$image->getClientOriginalExtension();
+            $image->move('ProductImages/',$nameImage);
             $product=new Products();
-            $product->name=$request->get('productName');
+            $product->name = $request->get('productName');
             $product->price = $request->get('productPrice');
-            $product->photo = $path ;
+            $product->type = $request->get('productType');
+            $product->item = $request->get('productItem');
+            $product->photo = $nameImage;
             $product->save();
-
-            return response()->json([$product]);
-
-
+            return response()->json(['message'=>'success Add']);
         }catch(Exception $e){
             Log::error($e);
         }

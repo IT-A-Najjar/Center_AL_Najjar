@@ -1,47 +1,84 @@
 import React, {Component} from "react";
 import axios from "axios";
 import {toast} from "react-toastify";
+import Card from "../card";
 
 
 class Create extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            items: [],
+            type: [],
             productName: null,
             productPrice: null,
+            productItem: null,
+            productType: null,
             productPhoto:null,
+
         };
     }
+    componentDidMount() {
+        this.getItemstList();
+        this.getTypeList();
+    }
+    getItemstList() {
+        let set=this;
+        axios("/centeralnajjar/get/items/list").then(function (response) {
+            set.setState({
+                items: response.data,
+            });
+        });
+    };
+    getTypeList() {
+        let set=this;
+        axios("/centeralnajjar/get/types/list").then(function (response) {
+            set.setState({
+                type: response.data,
+            });
+        });
+    };
 
     inputProductName=(event)=>{
         this.setState({
             productName: event.target.value,
-
         });
-        // console.log(this.state.productName);
     };
-
     inputProductPrice=(event)=>{
         this.setState({
             productPrice: event.target.value,
         })
     };
+    inputProductItem=(event)=>{
+        this.setState({
+            productItem: event.target.value,
+        })
+    }
+    inputProductType=(event)=>{
+        this.setState({
+            productType: event.target.value,
+        })
+        console.log(event.target.value)
+    }
     inputProductPhoto=(event)=>{
         this.setState({
-            productPhoto: event.target.value,
+            productPhoto: event.target.files[0],
         })
     };
 
-    storeProductData=()=>{
-        console.log("ksjdhxk");
-        axios.post('/store/product/data',{
-            productName: this.state.productName,
-            productPrice: this.state.productPrice,
-            productPhoto: this.state.productPhoto,
-        }).then((responce)=>{
-            console.log(responce.data);
-            toast.success("Product saved Successfully");
 
+    storeProductData=(e)=>{
+        e.preventDefault();
+        const url ='/centeralnajjar/store/product/data'
+        const data=new FormData();
+        data.append('productName',this.state.productName);
+        data.append('productPrice',this.state.productPrice);
+        data.append('productItem',this.state.productItem);
+        data.append('productType',this.state.productType);
+        data.append('productPhoto',this.state.productPhoto);
+        axios.post(url,data).then((response)=>{
+            console.log(response.data);
+            toast.success("Product saved Successfully");
             setInterval(()=>{
                 location.reload();
             },2500);
@@ -67,7 +104,7 @@ class Create extends Component{
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <form action="" className="form">
+                                <form action="" className="form" onSubmit={this.storeProductData}>
                                     <div className="form-group">
                                         <input
                                             type="text"
@@ -87,25 +124,61 @@ class Create extends Component{
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <input
-                                            type="file"
+                                        <select
                                             className="form-control mb-3"
-                                            id="productPhoto"
-                                            placeholder="Photo Product"
-                                            onChange={this.inputProductPhoto}
+                                            id="productItem"
+                                            placeholder="Item Product"
+                                            onChange={this.inputProductItem}
+                                        >
+                                            <option>
+                                                اختر الصنف
+                                            </option>
+                                            {this.state.items.map(function (data,id){
+                                                return <>
+                                                    <option value={data.id}>
+                                                        {data.name_item}
+                                                    </option>
+                                                </>
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <select
+                                            className="form-control mb-3"
+                                            id="productType"
+                                            placeholder="Type Product"
+                                            onChange={this.inputProductType}
+                                        >
+                                            <option>
+                                                اختر النوع
+                                            </option>
+                                            {this.state.type.map(function (data,id){
+                                                return <>
+                                                    <option value={data.id}>
+                                                        {data.name_type}
+                                                    </option>
+                                                </>
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="col-auto">
+                                        <input type="file"
+                                               className="form-control"
+                                               onChange={this.inputProductPhoto}
                                         />
+                                    </div>
+                                    <div className="modal-footer">
+                                        <input
+                                            type="submit"
+                                            className="btn btn-info"
+                                            value="Save"
+
+                                        />
+                                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </form>
                             </div>
-                            <div className="modal-footer">
-                                <input
-                                    type="button"
-                                    className="btn btn-info"
-                                    value="Save"
-                                    onClick={this.storeProductData}
-                                />
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>

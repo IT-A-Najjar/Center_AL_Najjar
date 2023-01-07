@@ -9,7 +9,7 @@ class Delete extends Component{
     }
 
     deleteProductData = (product) => {
-        axios.delete('/delete/product/data/' + product).then(()=>{
+        axios.delete('/centeralnajjar/delete/product/data/' + product).then(()=>{
             toast.error("product Delete successfully");
 
             setTimeout(()=>{

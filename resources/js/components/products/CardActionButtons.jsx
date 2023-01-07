@@ -15,7 +15,7 @@ class CardActionButtons extends Component{
 
     getProductDetails=(id)=>{
         axios
-            .post("/get/individual/product/details",{
+            .post("/centeralnajjar/get/individual/product/details",{
                 productId: id,
             })
             .then((response) => {
